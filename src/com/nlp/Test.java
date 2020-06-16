@@ -5,6 +5,8 @@ import com.nlp.enums.Number;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.util.*;
 
 /**
@@ -12,7 +14,7 @@ import java.util.*;
  */
 public class Test {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ParseException {
 
         Test test = new Test();
         List<String> list = test.getAllItems();
@@ -38,8 +40,8 @@ public class Test {
             list.remove(optIndex);
             list.set(optIndex - 1, result );
         }
-
-        System.out.println("Sonuç : " + list.get(0));
+        DecimalFormat df = new DecimalFormat( "#,###,###,##0.00" );
+        System.out.println("Sonuç : " + df.format(new Double(list.get(0))));
 
     }
 
@@ -63,16 +65,16 @@ public class Test {
     }
 
     public String  calculate(String operator, String number1, String number2){
-        BigDecimal value1 = new BigDecimal(number1);
-        BigDecimal value2 = new BigDecimal(number2);
+        Double value1 = new Double(number1);
+        Double value2 = new Double(number2);
         if (ArithmeticOperators.ADD.name().equals(operator)) {
-            return value1.add(value2).toString();
+            return (value1+value2) + "";
         }else if (ArithmeticOperators.SUBTRACT.name().equals(operator)) {
-            return value1.subtract(value2).toString();
+            return (value1-value2) + "";
         }else if (ArithmeticOperators.DIVIDE.name().equals(operator)) {
-            return value1.divide(value2, 2 , RoundingMode.HALF_UP).toString() + "";
+            return (value1/value2) + "";
         } else if (ArithmeticOperators.MULTIPLY.name().equals(operator)) {
-            return value1.multiply(value2).toString() + "";
+            return (value1*value2) + "";
         }else
             return "0";
     }
