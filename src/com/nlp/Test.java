@@ -70,7 +70,7 @@ public class Test {
         }else if (ArithmeticOperators.SUBTRACT.name().equals(operator)) {
             return value1.subtract(value2).toString();
         }else if (ArithmeticOperators.DIVIDE.name().equals(operator)) {
-            return value1.divide(value2, 2, RoundingMode.HALF_UP).toString() + "";
+            return value1.divide(value2, 2 , RoundingMode.HALF_UP).toString() + "";
         } else if (ArithmeticOperators.MULTIPLY.name().equals(operator)) {
             return value1.multiply(value2).toString() + "";
         }else
