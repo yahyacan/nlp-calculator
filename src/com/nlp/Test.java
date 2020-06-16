@@ -20,25 +20,27 @@ public class Test {
         while (list.size() > 1){
             String result = "";
             int optIndex = -1;
-            String operator = "";
+            ArithmeticOperators operator = null;
+
             if (list.contains(ArithmeticOperators.DIVIDE.name())){
                 optIndex = list.indexOf(ArithmeticOperators.DIVIDE.name());
-                operator = ArithmeticOperators.DIVIDE.name();
+                operator = ArithmeticOperators.DIVIDE;
             }else if(list.contains(ArithmeticOperators.MULTIPLY.name())){
                 optIndex = list.indexOf(ArithmeticOperators.MULTIPLY.name());
-                operator = ArithmeticOperators.MULTIPLY.name();
+                operator = ArithmeticOperators.MULTIPLY;
             }else if(list.contains(ArithmeticOperators.ADD.name())){
                 optIndex = list.indexOf(ArithmeticOperators.ADD.name());
-                operator = ArithmeticOperators.ADD.name();
+                operator = ArithmeticOperators.ADD;
             }else if(list.contains(ArithmeticOperators.SUBTRACT.name())){
                 optIndex = list.indexOf(ArithmeticOperators.SUBTRACT.name());
-                operator = ArithmeticOperators.SUBTRACT.name();
+                operator = ArithmeticOperators.SUBTRACT;
             }
-            if (optIndex == -1){
+            if (optIndex == -1 || operator == null){
                 System.out.println("Not calculated!");
                 return;
             }
-            result = test.calculate(operator, list.get(optIndex-1), list.get(optIndex+1) );
+
+            result = operator.getResult(Double.parseDouble(list.get(optIndex-1)),Double.parseDouble(list.get(optIndex+1))) + "";
             list.remove(optIndex + 1);
             list.remove(optIndex);
             list.set(optIndex - 1, result );
@@ -56,31 +58,25 @@ public class Test {
         StringTokenizer st = new StringTokenizer(text, " ");
         while (st.hasMoreElements()){
             String token = st.nextToken();
-            Number number = Number.findByName(token);
-            if (number != null)
-                list.add(number.getValue() + "");
-            else{
-                ArithmeticOperators operators = ArithmeticOperators.findByName(token);
-                if (operators != null)
-                    list.add(operators.name());
+            Optional<Number> optionalNumber =
+                    Arrays.stream(Number.values())
+                            .filter(op -> op.name().equalsIgnoreCase(token))
+                            .findFirst();
+            if (optionalNumber.isPresent()) {
+                list.add(optionalNumber.get().getValue() + "");
+                continue;
+            }
+
+            Optional<ArithmeticOperators> optionalArithmeticOperators =
+                    Arrays.stream(ArithmeticOperators.values())
+                            .filter(op -> op.getLabels().contains(token))
+                            .findFirst();
+            if (optionalArithmeticOperators.isPresent()) {
+                list.add(optionalArithmeticOperators.get().name() + "");
+                continue;
             }
         }
         return list;
-    }
-
-    public String  calculate(String operator, String number1, String number2){
-        Double value1 = new Double(number1);
-        Double value2 = new Double(number2);
-        if (ArithmeticOperators.ADD.name().equals(operator)) {
-            return (value1+value2) + "";
-        }else if (ArithmeticOperators.SUBTRACT.name().equals(operator)) {
-            return (value1-value2) + "";
-        }else if (ArithmeticOperators.DIVIDE.name().equals(operator)) {
-            return (value1/value2) + "";
-        } else if (ArithmeticOperators.MULTIPLY.name().equals(operator)) {
-            return (value1*value2) + "";
-        }else
-            return "0";
     }
 
 }
