@@ -30,11 +30,4 @@ public enum ArithmeticOperators {
         return operator.applyAsDouble(val1,val2);
     }
 
-    public static ArithmeticOperators findByName(String name) {
-        for (ArithmeticOperators operators : ArithmeticOperators.values()) {
-            if (operators.getLabels().contains(name))
-                return operators;
-        }
-        return null;
-    }
 }

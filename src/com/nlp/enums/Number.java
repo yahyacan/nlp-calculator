@@ -27,11 +27,4 @@ public enum Number {
         return value;
     }
 
-    public static Number findByName(String name) {
-        for (Number number : Number.values()) {
-            if (number.name().equalsIgnoreCase(name))
-                return number;
-        }
-        return null;
-    }
 }
