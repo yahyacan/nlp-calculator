@@ -3,8 +3,6 @@ package com.nlp;
 import com.nlp.enums.ArithmeticOperators;
 import com.nlp.enums.Number;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.*;
@@ -18,35 +16,41 @@ public class Test {
 
         Test test = new Test();
         List<String> list = test.getAllItems();
-        System.out.println(list);
 
         while (list.size() > 1){
             String result = "";
             int optIndex = -1;
+            String operator = "";
             if (list.contains(ArithmeticOperators.DIVIDE.name())){
                 optIndex = list.indexOf(ArithmeticOperators.DIVIDE.name());
-                result = test.calculate(ArithmeticOperators.DIVIDE.name(), list.get(optIndex-1), list.get(optIndex+1) );
+                operator = ArithmeticOperators.DIVIDE.name();
             }else if(list.contains(ArithmeticOperators.MULTIPLY.name())){
                 optIndex = list.indexOf(ArithmeticOperators.MULTIPLY.name());
-                result = test.calculate(ArithmeticOperators.MULTIPLY.name(), list.get(optIndex-1), list.get(optIndex+1) );
+                operator = ArithmeticOperators.MULTIPLY.name();
             }else if(list.contains(ArithmeticOperators.ADD.name())){
                 optIndex = list.indexOf(ArithmeticOperators.ADD.name());
-                result = test.calculate(ArithmeticOperators.ADD.name(), list.get(optIndex-1), list.get(optIndex+1) );
+                operator = ArithmeticOperators.ADD.name();
             }else if(list.contains(ArithmeticOperators.SUBTRACT.name())){
                 optIndex = list.indexOf(ArithmeticOperators.SUBTRACT.name());
-                result = test.calculate(ArithmeticOperators.SUBTRACT.name(), list.get(optIndex-1), list.get(optIndex+1) );
+                operator = ArithmeticOperators.SUBTRACT.name();
             }
+            if (optIndex == -1){
+                System.out.println("Not calculated!");
+                return;
+            }
+            result = test.calculate(operator, list.get(optIndex-1), list.get(optIndex+1) );
             list.remove(optIndex + 1);
             list.remove(optIndex);
             list.set(optIndex - 1, result );
         }
         DecimalFormat df = new DecimalFormat( "#,###,###,##0.00" );
-        System.out.println("Sonuç : " + df.format(new Double(list.get(0))));
+        System.out.println("Result: " + df.format(new Double(list.get(0))));
 
     }
 
     public List<String> getAllItems(){
         List<String> list = new ArrayList<>();
+        System.out.println("Please enter a calculation: ");
         Scanner sc = new Scanner(System.in);
         String text = sc.nextLine().toUpperCase(Locale.ENGLISH);
         StringTokenizer st = new StringTokenizer(text, " ");
